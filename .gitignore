@@ -1,0 +1,54 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environment
+.env
+*.env.local
+
+# Databases / generated data
+data/*.db
+data/*.db-shm
+data/*.db-wal
+reports/
+*.html
+
+# Node / frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+.npm/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V3
+.Trashes
+
+# IDEs
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+
+# Docker
+.docker/
+
+# Credentials / secrets (never commit)
+*.pem
+*.key
+credentials.json
+service_account*.json

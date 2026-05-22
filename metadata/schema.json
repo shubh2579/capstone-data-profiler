@@ -1,0 +1,133 @@
+{
+  "table_name": "RIDEBOOKING",
+  "description": "Ride booking data containing information about ride bookings, cancellations, ratings, and payments",
+  "columns": [
+    {
+      "name": "DATE",
+      "type": "DATE",
+      "description": "Date of the booking"
+    },
+    {
+      "name": "TIME",
+      "type": "TIME",
+      "description": "Time of the booking"
+    },
+    {
+      "name": "BOOKING_ID",
+      "type": "VARCHAR",
+      "description": "Unique identifier for each ride booking"
+    },
+    {
+      "name": "BOOKING_STATUS",
+      "type": "TEXT",
+      "description": "Status of booking (Completed, Cancelled by Customer, Cancelled by Driver, No Driver Found, Incomplete)"
+    },
+    {
+      "name": "CUSTOMER_ID",
+      "type": "VARCHAR",
+      "description": "Unique identifier for customers"
+    },
+    {
+      "name": "VEHICLE_TYPE",
+      "type": "VARCHAR",
+      "description": "Type of vehicle (Go Mini, Go Sedan, Auto, eBike/Bike, UberXL, Premier Sedan)"
+    },
+    {
+      "name": "PICKUP_LOCATION",
+      "type": "VARCHAR",
+      "description": "Starting location of the ride"
+    },
+    {
+      "name": "DROP_LOCATION",
+      "type": "VARCHAR",
+      "description": "Destination location of the ride"
+    },
+    {
+      "name": "AVG_VTAT",
+      "type": "DECIMAL",
+      "description": "Average time for driver to reach pickup location (in minutes)",
+      "unit": "minutes"
+    },
+    {
+      "name": "AVG_CTAT",
+      "type": "DECIMAL",
+      "description": "Average trip duration from pickup to destination (in minutes)",
+      "unit": "minutes"
+    },
+    {
+      "name": "CANCELLED_RIDES_BY_CUSTOMER",
+      "type": "VARCHAR",
+      "description": "Customer-initiated cancellation flag"
+    },
+    {
+      "name": "REASON_FOR_CANCELLING_BY_CUSTOMER",
+      "type": "VARCHAR",
+      "description": "Reason for customer cancellation"
+    },
+    {
+      "name": "CANCELLED_RIDES_BY_DRIVER",
+      "type": "VARCHAR",
+      "description": "Driver-initiated cancellation flag"
+    },
+    {
+      "name": "DRIVER_CANCELLATION_REASON",
+      "type": "VARCHAR",
+      "description": "Reason for driver cancellation"
+    },
+    {
+      "name": "INCOMPLETE_RIDES",
+      "type": "VARCHAR",
+      "description": "Incomplete ride flag"
+    },
+    {
+      "name": "INCOMPLETE_RIDES_REASON",
+      "type": "VARCHAR",
+      "description": "Reason for incomplete rides"
+    },
+    {
+      "name": "BOOKING_VALUE",
+      "type": "REAL",
+      "description": "Total fare amount for the ride",
+      "note": "Use CAST(BOOKING_VALUE AS REAL) for numeric operations"
+    },
+    {
+      "name": "RIDE_DISTANCE",
+      "type": "REAL",
+      "description": "Distance covered during the ride (in km)",
+      "unit": "km",
+      "note": "Use CAST(RIDE_DISTANCE AS REAL) for numeric operations"
+    },
+    {
+      "name": "DRIVER_RATINGS",
+      "type": "DECIMAL",
+      "description": "Rating given to driver (1-5 scale)",
+      "scale": "1-5"
+    },
+    {
+      "name": "CUSTOMER_RATING",
+      "type": "DECIMAL",
+      "description": "Rating given by customer (1-5 scale)",
+      "scale": "1-5"
+    },
+    {
+      "name": "PAYMENT_METHOD",
+      "type": "VARCHAR",
+      "description": "Method used for payment (UPI, Cash, Credit Card, Uber Wallet, Debit Card)"
+    }
+  ],
+  "data_quality_notes": [
+    "All column names are UPPER_SNAKE_CASE",
+    "Numeric columns (BOOKING_VALUE, RIDE_DISTANCE, AVG_VTAT, AVG_CTAT, DRIVER_RATINGS, CUSTOMER_RATING) are FLOAT — use directly, no casting needed",
+    "Never use TRY_CAST — columns are already numeric",
+    "BOOKING_VALUE is NULL for cancelled/incomplete/no-driver rides — only Completed rides have a value",
+    "BOOKING_STATUS values: 'Completed', 'Cancelled by Driver', 'No Driver Found', 'Cancelled by Customer', 'Incomplete'",
+    "CUSTOMER_ID values look like CID1234567 and BOOKING_ID values look like CNR1234567",
+    "CRITICAL — Snowflake NULL ordering: ORDER BY col DESC puts NULLs FIRST by default. ALWAYS append NULLS LAST when ordering by nullable columns such as BOOKING_VALUE, RIDE_DISTANCE, DRIVER_RATINGS, CUSTOMER_RATING"
+  ],
+  "common_queries": {
+    "top_customers_by_spend": "SELECT CUSTOMER_ID, SUM(BOOKING_VALUE) AS total_spend FROM RIDEBOOKING WHERE BOOKING_VALUE IS NOT NULL GROUP BY CUSTOMER_ID ORDER BY total_spend DESC NULLS LAST LIMIT 10",
+    "daily_aggregation": "SELECT DATE, COUNT(*) AS total_bookings, AVG(BOOKING_VALUE) AS avg_booking_value FROM RIDEBOOKING WHERE BOOKING_VALUE IS NOT NULL GROUP BY DATE ORDER BY DATE",
+    "vehicle_type_analysis": "SELECT VEHICLE_TYPE, COUNT(*) AS bookings, AVG(RIDE_DISTANCE) AS avg_distance FROM RIDEBOOKING WHERE RIDE_DISTANCE IS NOT NULL GROUP BY VEHICLE_TYPE ORDER BY avg_distance DESC NULLS LAST",
+    "cancellation_analysis": "SELECT BOOKING_STATUS, COUNT(*) AS cnt FROM RIDEBOOKING GROUP BY BOOKING_STATUS ORDER BY cnt DESC"
+  }
+}

@@ -1,0 +1,33 @@
+# Data Quality Engine — dependencies
+
+# Streamlit UI
+streamlit>=1.39.0
+
+# LangChain + LangGraph
+langchain>=0.3.0
+langchain-openai>=0.2.0
+langchain-community>=0.3.0
+langgraph>=0.2.0
+
+# Data
+pandas>=2.0.0
+numpy>=1.26.0
+
+# Profiling (custom pandas-based — ydata-profiling dropped: no Python 3.14 support)
+
+# ML — anomaly detection
+scikit-learn>=1.4.0
+
+# Visualisation
+plotly>=5.22.0
+
+# Snowflake
+snowflake-connector-python>=3.10.0
+snowflake-sqlalchemy>=1.6.0
+
+# API
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+
+# Environment
+python-dotenv>=1.0.0
