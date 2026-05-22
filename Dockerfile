@@ -37,5 +37,7 @@ RUN pip install --no-cache-dir aiofiles
 EXPOSE 8000
 
 ENV PYTHONUNBUFFERED=1
+# PORT is injected by Railway/Render at runtime; default to 8000 for local use
+ENV PORT=8000
 
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "uvicorn api.main:app --host 0.0.0.0 --port ${PORT}"]

@@ -18,19 +18,25 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/status"]
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 5
+      start_period: 15s
 
   # ── React frontend (dev) ─────────────────────────────────────────────────────
+  # Runs Vite dev server so you get hot-reload inside Docker.
+  # The VITE_API_URL env var tells vite.config.js to proxy /api → http://api:8000
+  # (Docker service DNS) instead of localhost.
   frontend:
     image: node:20-alpine
     working_dir: /app
-    command: sh -c "npm ci && npm run dev -- --host 0.0.0.0"
+    command: sh -c "npm ci && npm run dev"
     ports:
       - "5173:5173"
     volumes:
       - ./frontend:/app
+      - /app/node_modules          # anonymous volume so container modules win
     environment:
       - VITE_API_URL=http://api:8000
     depends_on:
-      - api
+      api:
+        condition: service_healthy
     restart: unless-stopped

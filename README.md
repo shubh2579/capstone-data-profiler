@@ -75,13 +75,33 @@ source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 3. Run with Docker (recommended)
+### 3. Run with Docker
+
+Two modes are available — choose the one that fits your workflow.
+
+#### Option A — Two containers (recommended for development, with hot-reload)
 
 ```bash
 docker-compose up --build
 ```
 
-Open **http://localhost:5173**
+| Container | URL | What it does |
+|---|---|---|
+| `api` | http://localhost:8000 | FastAPI + all pipeline endpoints |
+| `frontend` | http://localhost:5173 | Vite dev server with hot-reload |
+
+The frontend container proxies every `/api/*` call to the `api` container via Docker's internal DNS (`http://api:8000`). The `frontend` service waits for the `api` healthcheck to pass before starting.
+
+#### Option B — Single container (production / demo)
+
+Builds the React app and serves it directly from FastAPI on one port.
+
+```bash
+docker build -t dqe .
+docker run -p 8000:8000 --env-file .env dqe
+```
+
+Open **http://localhost:8000** — FastAPI serves the React app as static files. React Router works because FastAPI returns `index.html` for any non-`/api` path.
 
 ### 4. Run manually (two terminals)
 
@@ -128,6 +148,7 @@ On first run with `DATA_BACKEND=snowflake`, the app automatically uploads `data/
 | `POST` | `/api/profile` | Run data profiling |
 | `POST` | `/api/clean` | Run cleaning pipeline |
 | `POST` | `/api/sql` | `{ "question": "..." }` → SQL + results |
+| `POST` | `/api/sql/refine` | `{ "question", "previous_sql", "previous_answer", "feedback" }` → corrected SQL |
 | `POST` | `/api/anomaly` | Run anomaly detection |
 
 Interactive docs: **http://localhost:8000/docs**
@@ -200,13 +221,14 @@ capstone project/
 
 - [x] Git repository
 - [x] `.env.example` with all required variables
-- [x] Docker + docker-compose
-- [x] FastAPI backend with all endpoints
-- [x] React frontend with 4 pipeline pages + architecture overview
+- [x] Docker (single-container) + docker-compose (two-container dev)
+- [x] FastAPI backend — 6 endpoints including `/api/sql/refine`
+- [x] React frontend — 5 pages (Overview + 4 pipeline tabs)
+- [x] Architecture overview page with interactive pipeline flow diagram
 - [x] Snowflake integration (live data warehouse)
 - [x] LangGraph multi-agent orchestration
-- [x] Anomaly detection with explainability
-- [x] Text-to-SQL with auto-charting
+- [x] Anomaly detection with explainability (IQR z-score per flagged row)
+- [x] Text-to-SQL with auto-charting + iterative feedback loop
 - [ ] Demo video (5–10 min)
 - [ ] Deployed endpoint
 
