@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getStatus } from '../api'
-import { BarChart2, Sparkles, Database, AlertTriangle, Zap, ArrowRight, ArrowDown, ChevronRight, RefreshCw } from 'lucide-react'
+import { BarChart2, Sparkles, Database, AlertTriangle, Zap, ArrowRight, ArrowDown, ChevronRight, RefreshCw, ExternalLink, Github } from 'lucide-react'
+
+const SNOWFLAKE_URL = 'https://app.snowflake.com/ap-southeast-7.aws/ot93905/#/data/databases/RIDEBOOKING_DB/schemas/PUBLIC/table/RIDEBOOKING'
+const GITHUB_URL    = 'https://github.com/shubh2579/capstone-data-profiler'
 
 const STACK = [
   { label: 'LangChain',  color: 'bg-green-900/40 text-green-300 border-green-800' },
@@ -89,7 +92,7 @@ export default function Overview() {
           </div>
         </div>
 
-        {/* Dataset badge */}
+        {/* Dataset badges + external links */}
         <div className="flex flex-wrap gap-3 mt-4">
           <span className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-full text-gray-300">
             📦 NCR Uber Ride Bookings
@@ -107,6 +110,21 @@ export default function Overview() {
               ? `${status.backend === 'snowflake' ? 'Snowflake' : 'SQLite'} connected`
               : 'Checking connection…'}
           </span>
+
+          {/* Snowflake direct link */}
+          <a href={SNOWFLAKE_URL} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 bg-blue-900/30 border border-blue-800 text-blue-300 rounded-full hover:bg-blue-900/50 transition-colors">
+            ❄️ Open Snowflake
+            <ExternalLink size={12} className="opacity-70" />
+          </a>
+
+          {/* GitHub link */}
+          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 bg-gray-800 border border-gray-600 text-gray-300 rounded-full hover:bg-gray-700 transition-colors">
+            <Github size={14} />
+            GitHub
+            <ExternalLink size={12} className="opacity-70" />
+          </a>
         </div>
       </div>
 

@@ -1,7 +1,10 @@
 import { NavLink } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getStatus } from '../api'
-import { BarChart2, Sparkles, Database, AlertTriangle, Zap, LayoutDashboard } from 'lucide-react'
+import { BarChart2, Sparkles, Database, AlertTriangle, Zap, LayoutDashboard, ExternalLink, Github } from 'lucide-react'
+
+const SNOWFLAKE_URL = 'https://app.snowflake.com/ap-southeast-7.aws/ot93905/#/data/databases/RIDEBOOKING_DB/schemas/PUBLIC/table/RIDEBOOKING'
+const GITHUB_URL    = 'https://github.com/shubh2579/capstone-data-profiler'
 
 const nav = [
   { to: '/overview', label: 'Overview',           icon: LayoutDashboard },
@@ -68,8 +71,21 @@ export default function Layout({ children }) {
           ))}
         </nav>
 
-        <div className="p-4 border-t border-gray-800 text-xs text-gray-600">
-          Powered by LangChain · LangGraph · Snowflake
+        {/* External links */}
+        <div className="p-4 border-t border-gray-800 space-y-2">
+          <a href={SNOWFLAKE_URL} target="_blank" rel="noopener noreferrer"
+            className="flex items-center gap-2 text-xs text-blue-400 hover:text-blue-300 transition-colors group">
+            <span className="text-base leading-none">❄️</span>
+            <span>Open in Snowflake</span>
+            <ExternalLink size={11} className="opacity-50 group-hover:opacity-100 transition-opacity ml-auto" />
+          </a>
+          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer"
+            className="flex items-center gap-2 text-xs text-gray-400 hover:text-gray-200 transition-colors group">
+            <Github size={14} />
+            <span>View on GitHub</span>
+            <ExternalLink size={11} className="opacity-50 group-hover:opacity-100 transition-opacity ml-auto" />
+          </a>
+          <p className="text-xs text-gray-700 pt-1">LangChain · LangGraph · GPT-4o-mini</p>
         </div>
       </aside>
 
