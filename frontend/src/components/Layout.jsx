@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getStatus } from '../api'
-import { BarChart2, Sparkles, Database, AlertTriangle, Zap, LayoutDashboard, ExternalLink, Github } from 'lucide-react'
+import { BarChart2, Sparkles, Database, AlertTriangle, Zap, LayoutDashboard, ExternalLink, GitBranch } from 'lucide-react'
 
 const SNOWFLAKE_URL = 'https://app.snowflake.com/ap-southeast-7.aws/ot93905/#/data/databases/RIDEBOOKING_DB/schemas/PUBLIC/table/RIDEBOOKING'
 const GITHUB_URL    = 'https://github.com/shubh2579/capstone-data-profiler'
@@ -81,7 +81,7 @@ export default function Layout({ children }) {
           </a>
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-2 text-xs text-gray-400 hover:text-gray-200 transition-colors group">
-            <Github size={14} />
+            <GitBranch size={14} />
             <span>View on GitHub</span>
             <ExternalLink size={11} className="opacity-50 group-hover:opacity-100 transition-opacity ml-auto" />
           </a>

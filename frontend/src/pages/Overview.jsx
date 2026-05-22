@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getStatus } from '../api'
-import { BarChart2, Sparkles, Database, AlertTriangle, Zap, ArrowRight, ArrowDown, ChevronRight, RefreshCw, ExternalLink, Github } from 'lucide-react'
+import { BarChart2, Sparkles, Database, AlertTriangle, Zap, ArrowRight, ArrowDown, ChevronRight, RefreshCw, ExternalLink, GitBranch } from 'lucide-react'
 
 const SNOWFLAKE_URL = 'https://app.snowflake.com/ap-southeast-7.aws/ot93905/#/data/databases/RIDEBOOKING_DB/schemas/PUBLIC/table/RIDEBOOKING'
 const GITHUB_URL    = 'https://github.com/shubh2579/capstone-data-profiler'
@@ -121,7 +121,7 @@ export default function Overview() {
           {/* GitHub link */}
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 bg-gray-800 border border-gray-600 text-gray-300 rounded-full hover:bg-gray-700 transition-colors">
-            <Github size={14} />
+            <GitBranch size={14} />
             GitHub
             <ExternalLink size={12} className="opacity-70" />
           </a>
