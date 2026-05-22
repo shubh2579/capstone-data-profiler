@@ -21,8 +21,12 @@ build/
 data/*.db
 data/*.db-shm
 data/*.db-wal
+
+# Generated profiling reports (not source files)
 reports/
-*.html
+ge_reports/
+ge_reports/*.json
+*.profile.html
 
 # Node / frontend
 node_modules/

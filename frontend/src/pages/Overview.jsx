@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getStatus } from '../api'
-import { BarChart2, Sparkles, Database, AlertTriangle, Zap, ArrowRight, ArrowDown, ChevronRight } from 'lucide-react'
+import { BarChart2, Sparkles, Database, AlertTriangle, Zap, ArrowRight, ArrowDown, ChevronRight, RefreshCw } from 'lucide-react'
 
 const STACK = [
   { label: 'LangChain',  color: 'bg-green-900/40 text-green-300 border-green-800' },
@@ -41,8 +41,8 @@ const STAGES = [
     num: '03',
     icon: Database,
     title: 'Text-to-SQL',
-    description: 'Natural language → Snowflake SQL via GPT-4o-mini with schema-aware prompting',
-    tech: 'LangGraph + OpenAI',
+    description: 'Natural language → Snowflake SQL via GPT-4o-mini · iterative feedback loop to refine answers',
+    tech: 'LangGraph + OpenAI · /api/sql/refine',
     color: 'border-sky-600',
     accent: 'text-sky-400',
     bg: 'bg-sky-600/10',
@@ -140,10 +140,10 @@ export default function Overview() {
           {/* Stage 1 + 2 — linear */}
           <div className="flex flex-col md:flex-row items-center gap-3 justify-center">
             {[STAGES[0], STAGES[1]].map((s, i) => (
-              <>
-                <StageCard key={s.num} s={s} onClick={() => navigate(s.to)} />
+              <div key={s.num} className="flex items-center gap-3">
+                <StageCard s={s} onClick={() => navigate(s.to)} />
                 {i === 0 && <Arrow />}
-              </>
+              </div>
             ))}
           </div>
 
@@ -167,12 +167,54 @@ export default function Overview() {
           <div className="bg-gray-900 border border-indigo-900 rounded-xl px-5 py-3 text-center flex-1 max-w-xs">
             <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Backend</div>
             <div className="font-semibold text-indigo-300">FastAPI</div>
-            <div className="text-xs text-gray-600 mt-1">/api/profile · /api/clean · /api/sql · /api/anomaly</div>
+            <div className="text-xs text-gray-600 mt-1">
+              /api/profile · /api/clean · /api/sql · /api/sql/refine · /api/anomaly
+            </div>
           </div>
           <div className="bg-gray-900 border border-cyan-900 rounded-xl px-5 py-3 text-center flex-1 max-w-xs">
             <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Frontend</div>
             <div className="font-semibold text-cyan-300">React + Vite + Tailwind</div>
-            <div className="text-xs text-gray-600 mt-1">4 pipeline pages · dark dashboard</div>
+            <div className="text-xs text-gray-600 mt-1">5 pages · Overview + 4 pipeline tabs · dark dashboard</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Key Features highlight strip */}
+      <div className="mb-10">
+        <h2 className="text-lg font-semibold text-gray-200 mb-4 flex items-center gap-2">
+          <span className="w-1 h-5 bg-indigo-500 rounded-full inline-block" />
+          Key Features
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-gray-900 border border-sky-900 rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <RefreshCw size={15} className="text-sky-400" />
+              <span className="text-sm font-semibold text-sky-300">Feedback Loop</span>
+            </div>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Text-to-SQL supports iterative refinement. If an answer is wrong, select a quick-fix chip
+              or describe the issue — the LLM rewrites the SQL with full context of what failed.
+            </p>
+          </div>
+          <div className="bg-gray-900 border border-purple-900 rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <AlertTriangle size={15} className="text-purple-400" />
+              <span className="text-sm font-semibold text-purple-300">Explainable Anomalies</span>
+            </div>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Every flagged row gets an IQR z-score explanation — not just a flag.
+              Scatter plot + downloadable CSV of the 5% anomaly set.
+            </p>
+          </div>
+          <div className="bg-gray-900 border border-emerald-900 rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Zap size={15} className="text-emerald-400" />
+              <span className="text-sm font-semibold text-emerald-300">Dual Backend</span>
+            </div>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Snowflake as primary data warehouse with automatic SQLite fallback.
+              Switch via <code className="text-gray-400 font-mono text-xs">DATA_BACKEND</code> env-var — zero code change.
+            </p>
           </div>
         </div>
       </div>
