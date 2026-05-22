@@ -1,9 +1,20 @@
 # ── Stage 1: Build React frontend ────────────────────────────────────────────
 FROM node:20-alpine AS frontend-build
 WORKDIR /app/frontend
+
+# Install deps first (cached layer — only re-runs when package.json changes)
 COPY frontend/package*.json ./
 RUN npm ci
-COPY frontend/ .
+
+# Copy Vite entry point explicitly so it is never missing
+COPY frontend/index.html ./index.html
+
+# Copy the rest of the source
+COPY frontend/src ./src
+COPY frontend/public ./public
+COPY frontend/vite.config.js ./vite.config.js
+COPY frontend/eslint.config.js ./eslint.config.js
+
 RUN npm run build
 
 # ── Stage 2: Python backend ───────────────────────────────────────────────────

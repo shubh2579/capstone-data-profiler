@@ -1,0 +1,42 @@
+# Python virtualenv and cache — keep out of Docker build context
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local env file — secrets must be injected at runtime via Railway/docker run
+.env
+
+# SQLite database — will be created fresh inside the container
+data/*.db
+data/*.db-shm
+data/*.db-wal
+
+# Generated reports
+ge_reports/
+reports/
+
+# Node — reinstalled inside the container by npm ci
+frontend/node_modules/
+node_modules/
+
+# Pre-built frontend — Docker builds it fresh from source
+frontend/dist/
+frontend/.vite/
+
+# Git and IDE metadata
+.git/
+.gitignore
+.idea/
+.vscode/
+*.swp
+
+# macOS
+.DS_Store
+
+# Local-only files
+DEMO_SCRIPT.md
+PLAN.md

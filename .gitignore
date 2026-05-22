@@ -56,3 +56,6 @@ frontend/.vite/
 *.key
 credentials.json
 service_account*.json
+
+# Local-only notes (not for repo)
+DEMO_SCRIPT.md
